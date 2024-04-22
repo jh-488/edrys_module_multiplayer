@@ -1,7 +1,7 @@
 const homeContainer = document.querySelector(".home_container");
 const createRoomButton = document.getElementById("create_room");
 const joinRoomButton = document.getElementById("join_room");
-const joiningError = document.getElementById("joining_error");
+const error = document.getElementById("error");
 
 const welcomeSection = document.querySelector(".welcome_section");
 const nextButton = document.getElementById("next_button");
@@ -21,6 +21,8 @@ const gameWinner = document.getElementById("game_winner");
 
 Edrys.onReady(() => {
   console.log("Module Multiplayer is loaded!");
+
+  turnDuration = Edrys.module.config.timer ? Edrys.module.config.timer : 5; 
 });
 
 
@@ -33,6 +35,13 @@ let playersNumber = 0;
 
 // Display welcome section after creating a room
 createRoomButton.onclick = () => {
+  const users = JSON.parse(localStorage.getItem("usersInStation"));
+
+  if (users.allUsers.length > 1) {
+    error.innerHTML = "Room is busy! Try to join.";
+    return;
+  }
+
   playersNumber = +document.getElementById("players_number").value;
 
   homeContainer.style.display = "none";
@@ -50,7 +59,7 @@ joinRoomButton.onclick = () => {
     welcomeSection.style.display = "none";
     waitingSection.style.display = "flex";
   } else {
-    joiningError.style.display = "block";
+    error.innerHTML = "Please create a room first!";
   }
 };
 
@@ -131,7 +140,7 @@ window.addEventListener("storage", (event) => {
 
 const countdownElement = document.querySelector(".countdown");
 let currentPlayerIndex = 0; 
-let turnDuration = 60; // Turn duration in seconds
+let turnDuration;
 let challengeSolved = false;
 
 
@@ -165,8 +174,21 @@ const nextTurn = () => {
 
 const updateTimer = () => {
   const timestamp = Date.now() / 1000;
-  const timeLeft = (turnDuration - 1) - Math.round(timestamp) % turnDuration;
-  countdownElement.textContent = timeLeft;
+  const timeLeft = ((turnDuration * 60) - 1) - Math.round(timestamp) % (turnDuration * 60);
+  const minutes = Math.floor(timeLeft / 60);
+  let seconds = timeLeft % 60;
+
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+
+  countdownElement.textContent = `${minutes}:${seconds}`;
+
+  const timeLeftPercentage = (timeLeft / (turnDuration * 60)) * 100;
+
+  if (timeLeftPercentage <= 20) {
+    countdownElement.style.backgroundColor = "#ea3943";
+  } else {
+    countdownElement.style.backgroundColor = "#000000";
+  }
 
   if (timeLeft === 0) {
     nextTurn();

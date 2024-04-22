@@ -16,7 +16,7 @@
   margin: 0 5px;
   padding: 8px;
   box-shadow: 0px 0px 10px #3898ec;
-  background-color: #0766AD;
+  background-color: #1f75b5;
   border-radius: 5px;
   text-align: center;
 }
@@ -103,12 +103,12 @@
   gap: 8px;
 }
 
-.joining_error_container {
+.error_container {
   height: 25px;
 }
 
-#joining_error {
-  display: none;
+#error {
+  display: block;
   color: red;
   font-weight: 600;
 }
@@ -147,15 +147,21 @@
 /* Game section */
 .game_section {
   display: none;
-  margin-top: 20px;
   font-size: 1.3rem;
   animation: fadeInOut 1s ease-in-out;
 }
 
 .game_section table, th, td {
-  border: 2px solid #f4f4f4;
+  border: 1px solid #f4f4f4;
   text-align: center;
   height: 100%;
+  box-shadow: 0 0 5px #f4f4f4;
+}
+
+.game_section table th {
+  background-color: #044779;
+  color: #f4f4f4;
+  padding: 5px;
 }
 
 .main_user {
@@ -180,16 +186,21 @@
 }
 
 .timer {
-  margin-top: 5px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: right;
+  margin: 10px 0;
+  height: 45px;
 }
 
 
 .timer .countdown {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
+  background-color: #000000;
+  box-shadow: 0 0 5px #f4f4f4;
+  border-radius: 5px;
+  width: 90px;
+  text-align: center;
 }
 
 

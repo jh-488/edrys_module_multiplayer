@@ -36,8 +36,8 @@
         <button class="btn1" id="create_room">Create Room</button>
         <button class="btn1" id="join_room">Join Room</button>
       </div>
-      <div class="joining_error_container">
-        <p id="joining_error">Please create a room first!</p>
+      <div class="error_container">
+        <p id="error"></p>
       </div>
     </div>
 
@@ -57,6 +57,9 @@
     </div>
 
     <div class="game_section">
+      <div class="timer">
+        <div class="countdown"></div>
+      </div>
       <table>
         <tr>
           <th>Players in the room</th>
@@ -67,9 +70,6 @@
           <td id="player_turn"></td>
         </tr>
       </table>
-      <div class="timer">
-        <div class="countdown"></div>
-      </div>
     </div>
 
     <div class="winner_section">

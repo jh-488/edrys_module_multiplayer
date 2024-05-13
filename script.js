@@ -21,8 +21,6 @@ const gameWinner = document.getElementById("game_winner");
 
 Edrys.onReady(() => {
   console.log("Module Multiplayer is loaded!");
-
-  turnDuration = Edrys.module.config.timer ? Edrys.module.config.timer : 5; 
 });
 
 
@@ -139,15 +137,14 @@ window.addEventListener("storage", (event) => {
 
 
 const countdownElement = document.querySelector(".countdown");
-let currentPlayerIndex = 0; 
+let currentPlayerIndex = -1; 
 let turnDuration;
 let challengeSolved = false;
 
 
 const startGame = () => {
-  let currentPlayer = sortedPlayers[currentPlayerIndex];
-
-  setPlayerTurn(currentPlayer);
+  turnDuration = .5;
+  setPlayerTurn("Get Ready!!");
 }
 
 const setPlayerTurn = (player) => {
@@ -165,6 +162,8 @@ const nextTurn = () => {
   if (challengeSolved) {
     return;
   }
+
+  turnDuration = Edrys.module.config.timer ? Edrys.module.config.timer : 5;
   // Update current player index
   currentPlayerIndex = (currentPlayerIndex + 1) % playersInGame.length;
 

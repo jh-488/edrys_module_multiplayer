@@ -197,9 +197,9 @@ const updateTimer = () => {
 }
 
 
-// Handle received messages from the code editor module
+// Handle received messages from other modules
 Edrys.onMessage(({ from, subject, body, module }) => {
-  if (subject === "challenge-solved") {
+  if (subject === "challenge-solved" && Edrys.role !== "station") {
     challengeSolved = true;
     gameSection.style.display = "none";
     winnerSection.style.display = "block";

@@ -210,17 +210,14 @@
   text-align: center;
   font-size: 2rem;
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 60%;
+  transform: translateY(-60%);
   animation: fadeInOut 1s ease-in-out;
 }
 
 #game_winner {
   font-size: 2.5rem;
   font-weight: 600;
-  color: #f4f4f4;
-  border-radius: 5px;
-  padding: 5px;
-  background-color: #5e4dcd;
-  box-shadow: 0 0 10px #3898ec;
+  color: #3898ec;
+  text-shadow: 0 0 10px #3898ec;
 }

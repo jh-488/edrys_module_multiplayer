@@ -7,6 +7,6 @@ Users can create or join rooms, where they can play against each other. Each pla
 Use this URL to add the module to your class:
 
 ```
-    TODO
+    https://jh-488.github.io/edrys_module_multiplayer/index.html
 ```
 

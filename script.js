@@ -31,6 +31,11 @@ let playersJoinedNumber = 0;
 let playersNumber = 0;
 
 
+const changeTab = (showContainers, hideContainers, displayStyle) => {
+  hideContainers.forEach(container => container.style.display = 'none');
+  showContainers.forEach(container => container.style.display = displayStyle);
+};
+
 // Display welcome section after creating a room
 createRoomButton.onclick = () => {
   const users = JSON.parse(localStorage.getItem("usersInStation"));
@@ -42,8 +47,7 @@ createRoomButton.onclick = () => {
 
   playersNumber = +document.getElementById("players_number").value;
 
-  homeContainer.style.display = "none";
-  welcomeSection.style.display = "flex";
+  changeTab([welcomeSection], [homeContainer], 'flex');
 };
 
 // If user was invited to a room
@@ -53,9 +57,7 @@ joinRoomButton.onclick = () => {
   updatePlayersInRoom();
 
   if (playersJoinedNumber > 1) {
-    homeContainer.style.display = "none";
-    welcomeSection.style.display = "none";
-    waitingSection.style.display = "flex";
+    changeTab([waitingSection], [homeContainer, welcomeSection], 'flex');
   } else {
     error.innerHTML = "Please create a room first!";
   }
@@ -63,8 +65,7 @@ joinRoomButton.onclick = () => {
 
 // Display waiting section after clicking next button
 nextButton.onclick = () => {
-  welcomeSection.style.display = "none";
-  waitingSection.style.display = "flex";
+  changeTab([waitingSection], [welcomeSection], 'flex');
 
   updatePlayersInRoom();
 };
@@ -81,8 +82,7 @@ startGameButton.onclick = () => {
           : `<div class='user_raw'>${player}</div>`;
   }
 
-  waitingSection.style.display = "none";
-  gameSection.style.display = "block";
+  changeTab([gameSection], [waitingSection], 'block');
 
   startGame();
 };
@@ -201,8 +201,7 @@ const updateTimer = () => {
 Edrys.onMessage(({ from, subject, body, module }) => {
   if (subject === "challenge-solved" && Edrys.role !== "station") {
     challengeSolved = true;
-    gameSection.style.display = "none";
-    winnerSection.style.display = "block";
+    changeTab([winnerSection], [gameSection], 'block');
     gameWinner.innerHTML = `${sortedPlayers[currentPlayerIndex]}`;
   }
 }, (promiscuous = true));

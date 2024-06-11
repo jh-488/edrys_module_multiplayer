@@ -18,6 +18,7 @@ const playerTurn = document.getElementById("player_turn");
 const winnerSection = document.querySelector(".winner_section");
 const gameWinner = document.getElementById("game_winner");
 
+let usersInStation = [];
 
 Edrys.onReady(() => {
   console.log("Module Multiplayer is loaded!");
@@ -38,9 +39,7 @@ const changeTab = (showContainers, hideContainers, displayStyle) => {
 
 // Display welcome section after creating a room
 createRoomButton.onclick = () => {
-  const users = JSON.parse(localStorage.getItem("usersInStation"));
-
-  if (users.allUsers.length > 1) {
+  if (usersInStation.length > 1) {
     error.innerHTML = "Room is busy! Try to join.";
     return;
   }
@@ -73,11 +72,11 @@ nextButton.onclick = () => {
 let sortedPlayers = [];
 // Start game after clicking start game button
 startGameButton.onclick = () => {
-  sortedPlayers = [...playersInGame].sort();
+  sortedPlayers = [...usersInStation].sort();
   
-  for (const player of playersInGame) {
+  for (const player of usersInStation) {
     playersInRoom.innerHTML +=
-        player === playersInGame[0]
+        player === usersInStation[0]
           ? `<div class='main_user'>${player} (Me)</div>`
           : `<div class='user_raw'>${player}</div>`;
   }
@@ -87,33 +86,26 @@ startGameButton.onclick = () => {
   startGame();
 };
 
-// get users in station from edrys
-window.addEventListener("message", (message) => {
-  if (message.origin !== "http://localhost:6999") {
-    return;
-  }
 
-  if (message.data.length > 0) {
-    const data = JSON.parse(message.data);
-    //console.log("Received data:", data);
-
-    localStorage.setItem("usersInStation", JSON.stringify(data));
-  }
-});
-
-let playersInGame = [];
 // Update players in room after new users join
 const updatePlayersInRoom = () => {
   joinedPlayers.innerHTML = "";
-  const users = JSON.parse(localStorage.getItem("usersInStation"));
 
-  playersInGame = users.allUsers;
-  playersJoinedNumber = users.allUsers.length;
+  const allUsers = Edrys.liveClass.users;
+  for (const idx in allUsers) {
+    const user = allUsers[idx];
+
+    if (user.room.includes("Station") && !user.displayName.includes("Station") && !usersInStation.includes(user.displayName)) {
+      usersInStation.push(user.displayName);
+    }
+  }
+
+  playersJoinedNumber = usersInStation.length;
 
   if (playersJoinedNumber >= 0) {
-    for (const user of playersInGame) {
+    for (const user of usersInStation) {
       joinedPlayers.innerHTML +=
-        user === users.mainUser
+        user === Edrys.liveUser.displayName
           ? `<div class='main_user'>${user} (Me)</div>`
           : `<div class='user_raw'>${user}</div>`;
     }
@@ -128,13 +120,10 @@ const updatePlayersInRoom = () => {
   }
 };
 
-// If usersInStation has changed, update playersInRoom
-window.addEventListener("storage", (event) => {
-  if (event.key === "usersInStation") {
-    updatePlayersInRoom();
-  }
-});
 
+Edrys.onUpdate(() => {
+  updatePlayersInRoom();
+});
 
 const countdownElement = document.querySelector(".countdown");
 let currentPlayerIndex = -1; 
@@ -165,7 +154,7 @@ const nextTurn = () => {
 
   turnDuration = Edrys.module.config.timer ? Edrys.module.config.timer : 5;
   // Update current player index
-  currentPlayerIndex = (currentPlayerIndex + 1) % playersInGame.length;
+  currentPlayerIndex = (currentPlayerIndex + 1) % usersInStation.length;
 
   setPlayerTurn(sortedPlayers[currentPlayerIndex]);
 }

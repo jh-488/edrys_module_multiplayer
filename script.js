@@ -139,8 +139,6 @@ const startGame = () => {
 const setPlayerTurn = (player) => {
   Edrys.sendMessage("player-turn", player);
 
-  playerTurn.innerHTML = `${player}`;
-
   // To avoid confusion with the countdown timer (next player get ready)
   setTimeout(() => {
     updateTimer();
@@ -183,7 +181,7 @@ const updateTimer = () => {
   } else {
     setTimeout(updateTimer,  1000);
   }
-}
+};
 
 
 // Handle received messages from other modules
@@ -192,5 +190,7 @@ Edrys.onMessage(({ from, subject, body, module }) => {
     challengeSolved = true;
     changeTab([winnerSection], [gameSection], 'block');
     gameWinner.innerHTML = `${sortedPlayers[currentPlayerIndex]}`;
+  } else if (subject === "player-turn") {
+    playerTurn.innerHTML = `${body}`;
   }
 }, (promiscuous = true));

@@ -7,6 +7,11 @@
   font-family: "Poppins";
 }
 
+html, body {
+  background-color: #202b38;
+  color: #f4f4f4;
+}
+
 .app {
   height: 100vh;
 }
@@ -17,6 +22,7 @@
   padding: 8px;
   box-shadow: 0px 0px 10px #3898ec;
   background-color: #1f75b5;
+  color: #f4f4f4;
   border-radius: 5px;
   text-align: center;
 }
@@ -156,6 +162,7 @@
   text-align: center;
   height: 100%;
   box-shadow: 0 0 5px #f4f4f4;
+  background-color: #171717;
 }
 
 .game_section table th {
